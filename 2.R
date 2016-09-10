@@ -84,3 +84,77 @@ while(i>0){
 }
 
 
+install.packages("DMwR")
+require("DMwR")
+
+head(algae)
+
+
+summary(algae)
+
+hist(algae$mxPH)
+
+lines(density(algae$mxPH,na.rm=TRUE))
+hist(algae$mxPH,probability = T,ylim = 0:1)
+
+#  查找缺失值
+algae[!complete.cases(algae),]
+manyNAs(algae,0.2)
+x <- algae
+y <- na.omit(x)
+y
+x
+
+algae[!complete.cases(x),]
+x <- algae[-c(62,199),]
+manyNAs(x)
+
+# 查找相关性
+cor(algae[,4:18],use = "complete.obs")
+
+#可视化相关性,可分析 PO4和o 相关性 非常高
+symnum(cor(algae[,4:18],use = "complete.obs"))
+# 删除空值
+
+x <- algae[-manyNAs(algae),]
+
+#线性相关,一元线性回归
+lm(x$PO4~x$o,data = x)
+
+plot(x$PO4,x$o)
+
+
+
+#  处理缺失值方式
+
+clean.algae <- knnImputation(algae,k=10)
+
+clean.algae
+#attach(clean.algae)
+#a1
+#detach(clean.algae)
+# .  表示所有的 字段分析,建立多元线性回归模型
+lm.al <- lm(a1 ~ . ,data = clean.algae[,1:12])
+lm.al
+summary(lm.al)
+
+# 向后消元法（anova())
+#  值越小，对该变量的影响就越小
+anova(lm.al)
+# 更新模型，不考虑season,
+lm2.a1 <- update(lm.al, . ~. -season)
+#  Adjusted R-squared  值越大，模型越好
+summary(lm2.a1)
+
+#  之后不断优化模型，可以使用向后消元法
+anova(lm2.a1)
+#  比较多个模型
+anova(lm.al,lm2.a1)
+
+# 不断的使用向后消元法，step
+final.lm <- step(lm.al)
+
+
+
+summary(final.lm)
+
