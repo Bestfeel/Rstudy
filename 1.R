@@ -1,6 +1,8 @@
 x=rnorm(10,10,5)
 x
 plot(x)
+
+
 age <- c(1,3,4,5,6,7,8,9,10,12)
 weight <- c(2,3,5,1,4,5,6,12,14,18)
 #均值
@@ -12,6 +14,44 @@ sd(weight)
 #相关性
 cor(age,weight)
 plot(age,weight)
+
+
+a <- 10
+#查看数据类型
+mode(a)
+b <- "aaa"
+mode(b)
+
+length(b)
+
+
+mydata <- data.frame(age=numeric(0),
+                     gender=character(0),
+                     weight=numeric(0))
+edit(mydata)
+fix(mydata)model
+
+
+cat("输出语句提示，类似 print")
+# 关于函数
+#--------------
+
+g <- function(x) {
+  return(x+1)
+}
+
+g(2)
+
+# 不同return, 函数体内部最后一行为返回值
+foo <- function(x,y) {
+  y <- y + 1
+  x + y
+}
+
+foo(2,0)
+library(formatR)
+
+
 
 install.packages("car")
 library('car')
@@ -51,7 +91,16 @@ da <- c("a","b","a",'c',"b")
 x <- factor(da)
 
 levels(x)
+# 关于因子
+#---------------------
 
+x <- c(5,12,13,12)
+
+# 转化成因子
+xf <- factor(x)
+
+# 查看有哪些水平
+levels(xf) 
 
 
 install.packages(c("adabag", "arules", "C50", "dplyr", "e1071", "igraph", "mclust"))
@@ -267,4 +316,49 @@ results <- predict(object = model, newdata = iris.test, type = "class")
 
 res <- table(results, iris.test$Species)
 res
+
+
+install_github('ramnathv/slidify')
+install_github('ramnathv/slidifyLibraries')
+getwd()
+setwd("/Users/feel/githome/mygithub/Rstudy")
+
+library(slidify)
+author('mydeck')
+slidify('index.Rmd')
+
+require(devtools)
+install_github('ramnathv/rCharts')
+require(rCharts)
+
+## Example 1 Facetted Scatterplot
+names(iris) = gsub("\\.", "", names(iris))
+rPlot(SepalLength ~ SepalWidth | Species, data = iris, color = 'Species', type = 'point')
+
+## Example 2 Facetted Barplot
+hair_eye = as.data.frame(HairEyeColor)
+rPlot(Freq ~ Hair | Eye, color = 'Eye', data = hair_eye, type = 'bar')
+
+r1 <- rPlot(mpg ~ wt | am + vs, data = mtcars, type = 'point', color = 'gear')
+r1
+
+data(economics, package = 'ggplot2')
+econ <- transform(economics, date = as.character(date))
+m1 <- mPlot(x = 'date', y = c('psavert', 'uempmed'), type = 'Line',
+            data = econ)
+m1$set(pointSize = 0, lineWidth = 1)
+m1
+
+hair_eye_male <- subset(as.data.frame(HairEyeColor), Sex == "Male")
+n1 <- nPlot(Freq ~ Hair, group = "Eye", data = hair_eye_male, 
+            type = 'multiBarChart')
+n1
+
+require(devtools)
+install_github('ramnathv/rCharts@dev')
+install_github('ramnathv/rMaps')
+
+
+
+
 
